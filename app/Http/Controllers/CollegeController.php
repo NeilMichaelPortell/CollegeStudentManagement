@@ -22,7 +22,6 @@ class CollegeController extends Controller
     public function create()
     {
         return view('colleges.create');
-
     }
 
     /**
@@ -51,32 +50,41 @@ class CollegeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(College $college)
+    public function edit($id)
     {
+        $college = College::findOrFail($id);
         return view('colleges.edit', compact('college'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, College $college)
+    public function update(Request $request, $id)
     {
+        $college = College::findOrFail($id);
+
         $request->validate([
-            'name' => 'required|unique:colleges,name,' . $college->id,
-            'address' => 'required',
+            'name' => 'required|string|max:255|unique:colleges,name,'.$id,
+            'address' => 'required|string|max:255',
         ]);
 
-        $college->update($request->all());
+        $college->update([
+            'name' => $request->name,
+            'address' => $request->address,
+        ]);
 
-        return redirect()->route('colleges.index')->with('success', 'College was updated successfully');
+        return redirect()->route('colleges.index')->with('success', 'College updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(College $college)
-    {
-        $college->delete();
-        return redirect()->route('colleges.index')->with('success', 'College was deleted successfully');
-    }
+    public function destroy($id)
+{
+    $college = College::findOrFail($id);
+    $college->delete();
+
+    return redirect()->route('colleges.index')->with('success', 'College deleted successfully');
+}
+
 }

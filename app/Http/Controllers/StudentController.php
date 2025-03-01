@@ -57,8 +57,8 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:students,email',
-            'phone' => 'required|regex:/^[0-9]{8}$/',
+            'email' => 'required|email|unique:students,email',//6.Validation and Alerts
+            'phone' => 'required|regex:/^[0-9]{8}$/',//6.Validation and Alerts
             'dob' => 'required|date',
             'college_id' => 'required|exists:colleges,id',
         ]);
@@ -81,8 +81,9 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Student $student)
+    public function edit($id)
     {
+        $student = Student::findOrFail($id);
         $colleges = College::all();
         return view('students.edit', compact('student', 'colleges'));
     }
@@ -90,28 +91,35 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:students,email,' . $student->id,
-            'phone' => 'required|regex:/^[0-9]{8}$/',
-            'dob' => 'required|date',
-            'college_id' => 'required|exists:colleges,id',
-        ]);
+    $student = Student::findOrFail($id);
 
-        $student->update($request->all());
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:students,email,'.$id,
+        'college_id' => 'required|exists:colleges,id',
+    ]);
 
-        return redirect()->route('students.index')->with('success', 'Student was updated successfully');
+    $student->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'college_id' => $request->college_id,
+    ]);
+
+    return redirect()->route('students.index')->with('success', 'Student updated successfully.');
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
-    {
-        $student->delete();
-        return redirect()->route('students.index')->with('success', 'Student was deleted successfully');
-    }
+    public function destroy($id)
+{
+    $student = Student::findOrFail($id);
+    $student->delete();
+
+    return redirect()->route('students.index')->with('success', 'Student deleted successfully');
+}
+
 }
