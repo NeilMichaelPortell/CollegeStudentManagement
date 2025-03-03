@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends ('layouts.master')
 @section('title', 'Edit Student')
 
 @section('content')
@@ -17,7 +16,7 @@
     @endif
 
     <form action="{{ route('students.update', $student->id) }}" method="POST">
-    @csrf
+        @csrf
         @method('PUT')
 
         <div class="form-group">
@@ -28,6 +27,17 @@
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" name="email" class="form-control" value="{{ $student->email }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="college_id">College</label>
+            <select name="college_id" class="form-control" required>
+                @foreach($colleges as $college)
+                    <option value="{{ $college->id }}" {{ $student->college_id == $college->id ? 'selected' : '' }}>
+                        {{ $college->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Update Student</button>

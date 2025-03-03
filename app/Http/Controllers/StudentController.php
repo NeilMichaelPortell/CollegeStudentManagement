@@ -13,30 +13,21 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $collegeId = $request->input('college_id'); //get the selected college ID for the filter
-        
-        $sortOrder = $request->input('sort_order');//sorting by ID as default
-      
-        $query = Student::query();// Initialize query builder for students
+        $collegeId = $request->input('college_id'); // Get the selected college ID for the filter
+        $sortOrder = $request->input('sort_order', 'asc'); // Sorting by name in ascending order by default
 
+        $query = Student::query(); // Initialize query builder for students
 
-        //if a college is selected, filter students by that college
+        // If a college is selected, filter students by that college
         if ($collegeId) {
-            $students = Student::where('college_id', $collegeId)->get();
-        } else {
-           //no college in filter then show all students
-            $students = Student::all();
+            $query->where('college_id', $collegeId);
         }
 
-        //applying soring by name and sorting the order 
-        if ($sortOrder) {
-            $students = $query->orderBy('name', $sortOrder)->orderBy('id', 'asc')->get();
-        } else { //sort by id
-            $students = $query->orderBy('id')->get();
-        }
+        // Apply sorting by name and sorting order
+        $students = $query->orderBy('name', $sortOrder)->orderBy('id', 'asc')->get();
 
         $colleges = College::all(); // Get all colleges to display in the filter dropdown
-        return view('students.index', compact('students', 'colleges', 'sortOrder'));
+        return view('students.index', compact('students', 'colleges', 'sortOrder', 'collegeId'));
     }
     
 
