@@ -5,16 +5,6 @@
 <div class="container mt-5">
     <h2>Edit Student</h2>
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('students.update', $student->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -27,6 +17,16 @@
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" name="email" class="form-control" value="{{ $student->email }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ $student->phone }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" name="dob" class="form-control" value="{{ $student->dob }}" required>
         </div>
 
         <div class="form-group">

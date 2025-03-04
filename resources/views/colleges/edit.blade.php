@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1>Edit College</h1>
+    <h2>Edit College</h2>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -21,12 +21,12 @@
 
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name', $college->name) }}" required>
+            <input type="text" name="name" class="form-control" value="{{ $college->name }}" required>
         </div>
 
         <div class="form-group">
             <label for="address">Address</label>
-            <input type="text" name="address" class="form-control" value="{{ old('address', $college->address) }}" required>
+            <input type="text" name="address" class="form-control" value="{{ $college->address }}" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Update College</button>

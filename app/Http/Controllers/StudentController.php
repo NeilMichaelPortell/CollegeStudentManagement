@@ -50,13 +50,13 @@ class StudentController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:students,email',//6.Validation and Alerts
             'phone' => 'required|regex:/^[0-9]{8}$/',//6.Validation and Alerts
-            'dob' => 'required|date',
-            'college_id' => 'required|exists:colleges,id',
+            'dob' => 'required|date',//6.Validation and Alerts
+            'college_id' => 'required|exists:colleges,id',//6.Validation and Alerts
         ]);
 
         Student::create($request->all());
 
-        return redirect()->route('students.index')->with('success', 'Student was added successfully');
+        return redirect()->route('students.index')->with('success', 'Student was added successfully');//6.Validation and Alerts
     }
 
 
@@ -84,21 +84,19 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-    $student = Student::findOrFail($id);
+        $student = Student::findOrFail($id);
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:students,email,'.$id,
-        'college_id' => 'required|exists:colleges,id',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,'.$id,
+            'phone' => 'required|regex:/^[0-9]{8}$/', //shows a different error message pop up if the phone number is not 8 digits long
+            'dob' => 'required|date',
+            'college_id' => 'required|exists:colleges,id',
+        ]);
 
-    $student->update([
-        'name' => $request->name,
-        'email' => $request->email,
-        'college_id' => $request->college_id,
-    ]);
+        $student->update($request->all());
 
-    return redirect()->route('students.index')->with('success', 'Student updated successfully.');
+        return redirect()->route('students.index')->with('updated', 'Student updated successfully.');
     }
 
 
@@ -106,11 +104,11 @@ class StudentController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    $student = Student::findOrFail($id);
-    $student->delete();
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
 
-    return redirect()->route('students.index')->with('success', 'Student deleted successfully');
-}
+        return redirect()->route('students.index')->with('deleted', 'Student deleted successfully.');
+    }
 
 }
