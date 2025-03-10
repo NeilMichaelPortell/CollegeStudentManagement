@@ -12,8 +12,8 @@ class CollegeController extends Controller
      */
     public function index()
     {
-        $colleges = College::all();
-        return view('colleges.index', compact('colleges'));
+        $colleges = College::all();//fetching all available colleges 
+        return view('colleges.index', compact('colleges'));//returns the index view with the list of colleges
     }
 
     /**
@@ -21,7 +21,7 @@ class CollegeController extends Controller
      */
     public function create()
     {
-        return view('colleges.create');
+        return view('colleges.create');//shows the form to create a college
     }
 
     /**
@@ -29,6 +29,7 @@ class CollegeController extends Controller
      */
     public function store(Request $request)
     {
+        //to validate the requested data and creates a new college
         $request->validate([
             'name' => 'required|unique:colleges,name',
             'address' => 'required',
@@ -48,6 +49,7 @@ class CollegeController extends Controller
      */
     public function show($id)
     {
+        //to show the details of a college
         $college = College::findOrFail($id);
         return view('colleges.show', compact('college'));
     }
@@ -56,9 +58,10 @@ class CollegeController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
+    //to show the form to edit a college
     {
         $college = College::findOrFail($id);
-        return view('colleges.edit', compact('college'));
+        return view('colleges.edit', compact('college'));//returns the edit form 
     }
 
     /**
@@ -66,8 +69,9 @@ class CollegeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //validate the new drequested data from the edit form and updates it
         $college = College::findOrFail($id);
-
+        
         $request->validate([
             'name' => 'required|unique:colleges,name,'.$id,
             'address' => 'required',
@@ -88,7 +92,7 @@ class CollegeController extends Controller
     public function destroy($id)
     {
         $college = College::findOrFail($id);
-        $college->delete();
+        $college->delete();//deletes permanately the college 
 
         return redirect()->route('colleges.index')->with('deleted', 'College deleted successfully.');
     }

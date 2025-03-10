@@ -36,6 +36,7 @@ class StudentController extends Controller
      */
     public function create()
     {
+        //crteaes a new student
         $colleges = College::all();
         return view('students.create', compact('colleges'));
     }
@@ -46,6 +47,7 @@ class StudentController extends Controller
     
     public function store(Request $request)
     {
+        //validates the requestesd data and creates a new student
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:students,email',//6.Validation and Alerts
@@ -65,6 +67,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        //shows the details of a student
         return view('students.show', compact('student'));
     }
 
@@ -74,6 +77,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        //shows the form to edit a student
         $student = Student::findOrFail($id);
         $colleges = College::all();
         return view('students.edit', compact('student', 'colleges'));
@@ -84,6 +88,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //validates the requested data from the edit form and updates it
         $student = Student::findOrFail($id);
 
         $request->validate([
@@ -105,6 +110,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
+        //deletes a student
         $student = Student::findOrFail($id);
         $student->delete();
 

@@ -4,10 +4,11 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <h1>Students</h1>
+        <!-- Button to add a new student -->
         <a href="{{ route('students.create') }}" class="btn btn-primary">Add Student</a>
     </div>
 
-    <!-- Student filter by college: part 5 -->
+    <!-- Student filter by college-->
     <div class="mt-3">
         @include('students.filter', ['colleges' => $colleges])
     </div>
@@ -16,7 +17,7 @@
     <div class="mt-3">
         @include('students.sort')
     </div>
-
+      <!-- Alert message if no students are found -->
     @if($students->isEmpty())
         <div class="alert alert-info mt-3">
             No students found.
@@ -35,8 +36,11 @@
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->college->name }}</td>
                     <td>
+                        <!-- Button to view students details -->
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewStudentModal{{ $student->id }}">View</button>
+                        <!-- Button to edit students details -->
                         <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                         <!-- Button to delete students details -->
                         <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
