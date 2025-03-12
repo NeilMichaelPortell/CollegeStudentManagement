@@ -36,7 +36,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //crteaes a new student
+        //creates a new student
         $colleges = College::all();
         return view('students.create', compact('colleges'));
     }
@@ -59,16 +59,6 @@ class StudentController extends Controller
         Student::create($request->all());
 
         return redirect()->route('students.index')->with('success', 'Student was added successfully');//6.Validation and Alerts
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Student $student)
-    {
-        //shows the details of a student
-        return view('students.show', compact('student'));
     }
 
 

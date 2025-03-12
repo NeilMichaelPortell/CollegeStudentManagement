@@ -44,15 +44,6 @@ class CollegeController extends Controller
         return redirect()->route('colleges.index')->with('success', 'College was added successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        //to show the details of a college
-        $college = College::findOrFail($id);
-        return view('colleges.show', compact('college'));
-    }
 
     /**
      * Show the form for editing the specified resource.
